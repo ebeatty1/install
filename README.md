@@ -1,6 +1,6 @@
 # Install
 
-Script for automating the setup of a normal working environment on a fresh install.
+Script for automating the setup of a normal working environment on a fresh install. This is designed to work on Arch-based distros, but should work just fine as long as pacman is installed. 
 
 # Dependencies
 
