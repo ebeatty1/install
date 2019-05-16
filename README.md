@@ -3,7 +3,7 @@ Script for automating the setup of a normal working environment on a fresh insta
 distros, but should work just fine as long as pacman is installed. 
 
 ## Dependencies
-pacman
+`pacman`
 
 ## Instructions
 ```sh
