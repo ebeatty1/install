@@ -9,4 +9,5 @@ distros, but should work just fine as long as pacman is installed.
 ```sh
 git clone https://github.com/ebeatty1/install/
 cd ./install
-sh ./install.sh```
+sh ./install.sh
+```
