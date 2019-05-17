@@ -7,7 +7,6 @@ distros, but should work just fine as long as pacman is installed.
 
 ## Instructions
 ```sh
-git clone https://github.com/ebeatty1/install/
-cd ./install
+wget https://raw.githubusercontent.com/ebeatty1/install/master/install.sh
 sh ./install.sh
 ```
