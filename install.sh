@@ -11,7 +11,7 @@ packages=(irssi)
 sudo pacman -S ${packages[*]} --noconfirm --needed --verbose
 
 # If the flag -i is provided with an argument in the form of user@address of the backup
-# server (ie. evan@192.168.1.2), run rsync and setup all appropriate symlinks.
+# server (i.e. evan@192.168.1.2), run rsync and setup all appropriate symlinks.
 while getopts ":i:" opt; do
         case $opt in
                 i)
