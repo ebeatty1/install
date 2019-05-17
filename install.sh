@@ -6,7 +6,7 @@
 declare -a packages
 
 # Un-comment the full array and comment the testing array in the final version
-# packages=(cmus irssi mpv neofetch perl rsync scite screen texmaker vnstat youtube-dl)
+# packages=(cmus dos2unix irssi mpv neofetch perl rsync screen texmaker vnstat youtube-dl)
 packages=(irssi)
 
 # Un-comment the full command in the final version
