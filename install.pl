@@ -84,4 +84,4 @@ while (my $aurpackage = shift@aurpackages){
 #        esac
 # done
 
-# I should probably just write this in perl
+# I guess I actually got around to writing it in perl
