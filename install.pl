@@ -10,24 +10,24 @@ my $base;
 my $full;
 
 my $usage = <<"USAGE";
+
 NAME		$name
-SYNOPSIS	Script for automating the setup of a normal working environment on a fresh install. This is designed to work on 
-            Arch-based distros, but should work just fine as long as pacman is installed. Might also do updates, so I can keep 
-		    everything in one place.
-				
+SYNOPSIS	A short script to make initial setup and updating of Arch-based 
+		distros a little easier.
+
 USAGE		install.pl [options]
-EXAMPLE (package installation): install.pl --base
-EXAMPLE (package installation + rsync): install.pl --full
+EXAMPLE (package installation): 	install.pl --base
+EXAMPLE (package installation + rsync):	install.pl --full
 USAGE
 
-# die "$usage\n" unless@ARGV;
+die "$usage\n" unless@ARGV;
 
-my $options = <<'OPTIONS';
+my $options = <<"OPLIST";
 OPTIONS:
 -h (--help)	Display this list of options
--b (--base)	Installs all packages
--f (--full)	Installs all packages, runs rsync, and sets symlinks pointing to the rsync folder
-OPTIONS
+-b (--base)	Install packages
+-f (--full)	Install packages, run rsync, and set symlinks
+OPLIST
 
 GetOptions(
 	'h|help' => \$help,
@@ -35,26 +35,38 @@ GetOptions(
 	'f|full=s' => \$full
 );
 
-# Start by ensuring everything is up to date
-system "sudo pacman -Syu --noconfirm --verbose";
+if ($help){die "$usage\n$options\n";}
 
-# Un-comment the full array and comment the testing array in the final version
-# my @packages = (cmus, dos2unix, irssi, mpv, neofetch, perl, rsync, screen, texmaker, vnstat, youtube-dl);
-my @packages = ("irssi", "cmus", "neofetch");
+if ($base || $full){
+	# Start by ensuring everything is up to date
+	system "sudo pacman -Syu --noconfirm --verbose";
 
-# Un-comment the full command in the final version
-# sudo pacman -S ${packages[*]} --noconfirm --needed --verbose 1> ./pac.log 2> ./pac.err
-system "sudo pacman -S @packages --noconfirm --needed --verbose";
+	# Un-comment the full array and comment the testing array in the final version
+	# my @packages = (cmus, dos2unix, irssi, mpv, neofetch, perl, rsync, screen, texmaker, vnstat, youtube-dl);
+	my @packages = ("irssi", "cmus", "neofetch");
 
-# Un-comment the full array and comment the testing array in the final version
-my @aurpackages = ("mendeley-desktop", "scite", "snapgene-viewer");
-# my @aurpackages = ("scite");
+	# Un-comment the full command in the final version
+	# sudo pacman -S ${packages[*]} --noconfirm --needed --verbose 1> ./pac.log 2> ./pac.err
+	system "sudo pacman -S @packages --noconfirm --needed --verbose";
 
-# Again, un-comment out the full command in the final version
-# This section is for packages in the arch user repo
+	# Un-comment the full array and comment the testing array in the final version
+	my @aurpackages = ("mendeley-desktop", "scite", "snapgene-viewer");
+	# my @aurpackages = ("scite");
 
-while (my $aurpackage = shift@aurpackages){
-	system "echo 'cd ~/Downloads && git clone https://aur.archlinux.org/$aurpackage.git && cd ./$aurpackage && makepkg -si'";
+	# Again, un-comment out the full command in the final version
+	# This section is for packages in the arch user repo
+
+	while (my $aurpackage = shift@aurpackages){
+		system "echo 'cd ~/Downloads && git clone https://aur.archlinux.org/$aurpackage.git && cd ./$aurpackage && makepkg -si'";
+	}
+}
+if ($full){
+	if ($full=="ip"){
+		system "echo 'rsync blah blah'";
+	}
+	else{
+		system "echo 'Please format servers addresses to match the following: user@192.168.1.2'";
+	}
 }
 # rm -R ./scite			# Should I do this? A binary gets placed in /usr/bin
 # cd ~
