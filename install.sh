@@ -6,22 +6,26 @@
 declare -a packages
 
 # Un-comment the full array and comment the testing array in the final version
-# packages=(cmus dos2unix irssi mpv neofetch perl rsync screen texmaker vnstat youtube-dl)
+# packages=(cmus dos2unix firefox git htop irssi mpv nano neofetch opusfile perl qpdfview rsync screen texmaker vnstat youtube-dl)
 packages=(irssi)
 
 # Un-comment the full command in the final version
 # sudo pacman -S ${packages[*]} --noconfirm --needed --verbose 1> ./pac.log 2> ./pac.err
 sudo pacman -S ${packages[*]} --noconfirm --needed --verbose
 
-# Again, un-comment out the full command in the final version
 # This section is for packages in the arch user repo
+declare -a aurpackages
+aurpackages=(scite fastqc mendeleydesktop snapgene-viewer)
+
+# Again, un-comment out the full commands in the final version
 # cd ~/Downloads
-# git clone https://aur.archlinux.org/scite.git
+# git clone https://aur.archlinux.org/${aurpackages[*]}.git	# Needs to be fixed
 # cd ./scite
 # makepkg -si
 # cd ../
 # rm -R ./scite			# Should I do this? A binary gets placed in /usr/bin
 # cd ~
+# Put this in a while loop? Need to figure out how to push an array in bash
 
 # If the flag -r is provided with an argument in the form of user@address of the backup
 # server (i.e. evan@192.168.1.2), run rsync and setup all appropriate symlinks
