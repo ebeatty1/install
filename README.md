@@ -7,6 +7,6 @@ distros, but should work just fine as long as pacman is installed.
 
 ## Instructions
 ```sh
-wget https://raw.githubusercontent.com/ebeatty1/install/master/install.sh
-sh ./install.sh
+wget https://raw.githubusercontent.com/ebeatty1/install/master/install.pl
+perl ./install.pl
 ```
