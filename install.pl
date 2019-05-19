@@ -60,7 +60,7 @@ if ($base || $full){
 	# Start by ensuring everything is up to date
 	system "sudo pacman -Syu --noconfirm --verbose";
 
-	my @packages = ("cmus", "dos2unix", "irssi", "mpv", "neofetch", "perl", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+	my @packages = ("cmus", "dos2unix", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 	my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 	
 	system "sudo pacman -S @packages --noconfirm --needed --verbose";
