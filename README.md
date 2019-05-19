@@ -1,6 +1,7 @@
 # Install
-Script for automating the setup of a normal working environment on a fresh install. This is designed to work on Arch-based 
-distros, but should work just fine as long as pacman is installed. 
+Automates the normal initial setup of personal Linux machines. Designed to work with Manjaro Linux, but likely works on other 
+Arch-based distributions (or, more generally, any machine that has pacman installed). Also contains instructions for automating
+the update process.
 
 ## Dependencies
 `pacman`
