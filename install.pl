@@ -61,23 +61,27 @@ if ($base || $full){
 	system "sudo pacman -Syu --noconfirm --verbose";
 
 	my @packages = ("cmus", "dos2unix", "irssi", "mpv", "neofetch", "perl", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
-	my @aurpackages = ("fastqc", "mendeleydesktop", "scite", "snapgene-viewer");
+	my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 	
 	system "sudo pacman -S @packages --noconfirm --needed --verbose";
 	
 	system "mkdir -p ~/AUR";
 	
-	# Installs AUR packages and updates buildfiles for packages that already exist
+	# Installs AUR packages and updates packages that already exist
 	while (my $aurpackage = shift@aurpackages) {
-		my $prog = `bash -c "command -v $aurpackage"`; chomp $prog; 
-		if ($prog eq ''){system "echo 'cd ~/AUR/ && git clone https://aur.archlinux.org/$aurpackage.git && cd ./$aurpackage && makepkg -si'";}
-		# This next line updates buildfiles only
-		else {system "echo 'cd ~/AUR/$aurpackage && git pull'";}
+		if (-d "$ENV{HOME}/AUR/$aurpackage") {
+			system "cd ~/AUR/$aurpackage && git pull && makepkg -scCi --noconfirm --needed";
+		}
+		else {
+			system "cd ~/AUR/ && git clone https://aur.archlinux.org/$aurpackage.git && cd ./$aurpackage && makepkg -scCi --noconfirm --needed";
+		}
 	}
 }
 
 # Run rsync
 if ($addr){
-	print "Running rsync\n";
-	# This still needs to be completed
+	system "mkdir -p ~/Documents/rsync/ && rsync -avz '$addr':~/rsync/ ~/Documents/rsync/";
+#	Setup symlinks pointing towards the rsync folder
+#	ln --symbolic -T ~/Documents/rsync/Pictures/ ~/Pictures
+#	ln --symbolic -T ~/Documents/rsync/Articles/ ~/Documents/Articles
 }
