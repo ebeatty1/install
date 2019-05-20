@@ -8,6 +8,7 @@ my $base;
 my $full;
 my $rsync;
 my $addr;
+my $de;
 
 my $usage = <<"USAGE";
 
@@ -46,6 +47,12 @@ GetOptions(
 );
 
 if ($help){die "$usage\n$options\n";}
+
+if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
+	# This needs to be completed
+	# Will edit ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml to replace 
+	# xfce4-terminal --drop-down to xfce4-terminal, as the drop-down terminal is garbage.
+}
 
 # Checks to ensure that the address, if given, is formatted properly (IPv4 only for now); if not, dies
 if ($full) {$addr = $full;}
