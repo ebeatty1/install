@@ -80,7 +80,7 @@ if ($base || $full){
 
 # Run rsync
 if ($addr){
-	system "mkdir -p ~/Documents/rsync/ && rsync -avz '$addr':~/rsync/ ~/Documents/rsync/";
+	system "mkdir -p ~/Documents/rsync/ && rsync -avzhe ssh '$addr':~/rsync/* ~/Documents/rsync";
 #	Setup symlinks pointing towards the rsync folder
 #	ln --symbolic -T ~/Documents/rsync/Pictures/ ~/Pictures
 #	ln --symbolic -T ~/Documents/rsync/Articles/ ~/Documents/Articles
