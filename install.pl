@@ -9,6 +9,9 @@ my $full;
 my $rsync;
 my $addr;
 my $de;
+my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
+my @keybinds;
+
 
 my $usage = <<"USAGE";
 
@@ -49,9 +52,16 @@ GetOptions(
 if ($help){die "$usage\n$options\n";}
 
 if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
-	# This needs to be completed
-	# Will edit ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml to replace 
-	# xfce4-terminal --drop-down to xfce4-terminal, as the drop-down terminal is garbage.
+	open XFCEKEYBINDSIN, "<$xfcekeys";
+	@keybinds = <XFCEKEYBINDSIN>;
+	close XFCEKEYBINDSIN;
+
+	open XFCEKEYBINDSOUT, ">$xfcekeys";
+	while (my $line = shift(@keybinds)) {
+		$line =~ s/\s--drop-down//;
+		print XFCEKEYBINDSOUT $line;
+	}
+	close XFCEKEYBINDSOUT;
 }
 
 # Checks to ensure that the address, if given, is formatted properly (IPv4 only for now); if not, dies
