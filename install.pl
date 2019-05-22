@@ -51,6 +51,7 @@ GetOptions(
 
 if ($help){die "$usage\n$options\n";}
 
+# Removes any and all instances of xfce4-terminal --drop-down
 if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
 	open XFCEKEYBINDSIN, "<$xfcekeys";
 	@keybinds = <XFCEKEYBINDSIN>;
