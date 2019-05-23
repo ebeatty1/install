@@ -69,7 +69,7 @@ if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
 
 	open XFCEKEYBINDS, ">$xfcekeys";
 	while (my $line = shift(@keybinds)) {
-		if ($line =~ m/\s--drop-down/;) {
+		if ($line =~ m/\s--drop-down/) {
 			$line =~ s/\s--drop-down//;
 			$restart = "required";
 		}
