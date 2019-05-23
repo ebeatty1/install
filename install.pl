@@ -103,3 +103,5 @@ if ($addr){
 #	ln --symbolic -T ~/Documents/rsync/Pictures/ ~/Pictures
 #	ln --symbolic -T ~/Documents/rsync/Articles/ ~/Documents/Articles
 }
+
+system "shutdown -r";
