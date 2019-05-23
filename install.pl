@@ -10,7 +10,7 @@ my $rsync;
 my $addr;
 my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
-my $restart;
+my $restart = "";
 my @keybinds;
 my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
