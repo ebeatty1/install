@@ -10,6 +10,7 @@ my $rsync;
 my $addr;
 my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
+my $restart;
 my @keybinds;
 my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
@@ -68,7 +69,10 @@ if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
 
 	open XFCEKEYBINDS, ">$xfcekeys";
 	while (my $line = shift(@keybinds)) {
-		$line =~ s/\s--drop-down//;
+		if ($line =~ m/\s--drop-down/;) {
+			$line =~ s/\s--drop-down//;
+			$restart = "required";
+		}
 		print XFCEKEYBINDS $line;
 	}
 	close XFCEKEYBINDS;
@@ -102,4 +106,6 @@ if ($addr){
 #	ln --symbolic -T ~/Documents/rsync/Articles/ ~/Documents/Articles
 }
 
-system "shutdown -r";
+if ($restart eq "required") {
+	system "shutdown -r";
+}
