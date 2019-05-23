@@ -12,7 +12,7 @@ my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
 my $restart = "";
 my @keybinds;
-my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "irssi", "mpv", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
 my $usage = <<"USAGE";
@@ -61,27 +61,27 @@ if ($rsync) {
 }
 if ($addr) {chomp $addr; die "$addrformat\n" unless $addr =~ /.+\@.+/;}
 
-# Removes any and all instances of xfce4-terminal --drop-down from xfce4-keyboard-shortcuts.xml
-if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
-	open XFCEKEYBINDS, "<$xfcekeys";
-	@keybinds = <XFCEKEYBINDS>;
-	close XFCEKEYBINDS;
-
-	open XFCEKEYBINDS, ">$xfcekeys";
-	while (my $line = shift(@keybinds)) {
-		if ($line =~ m/\s--drop-down/) {
-			$line =~ s/\s--drop-down//;
-			$restart = "required";
-		}
-		print XFCEKEYBINDS $line;
-	}
-	close XFCEKEYBINDS;
-}
-
 # Update system, install packages
 if ($base || $full){
 	# Start by ensuring everything is up to date
 	system "sudo pacman -Syu --noconfirm --verbose";
+	
+	# Removes any and all instances of xfce4-terminal --drop-down from xfce4-keyboard-shortcuts.xml
+	if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
+		open XFCEKEYBINDS, "<$xfcekeys";
+		@keybinds = <XFCEKEYBINDS>;
+		close XFCEKEYBINDS;
+
+		open XFCEKEYBINDS, ">$xfcekeys";
+		while (my $line = shift(@keybinds)) {
+			if ($line =~ m/\s--drop-down/) {
+				$line =~ s/\s--drop-down//;
+				$restart = "required";
+			}
+			print XFCEKEYBINDS $line;
+		}
+		close XFCEKEYBINDS;
+	}
 	
 	# Install packages from the official arch repositories
 	system "sudo pacman -S @packages --noconfirm --needed --verbose";
@@ -100,10 +100,12 @@ if ($base || $full){
 
 # Run rsync
 if ($addr){
-	system "mkdir -p ~/Documents/rsync/ && rsync -avzhe ssh '$addr':~/rsync/* ~/Documents/rsync";
-#	Setup symlinks pointing towards the rsync folder
-#	ln --symbolic -T ~/Documents/rsync/Pictures/ ~/Pictures
-#	ln --symbolic -T ~/Documents/rsync/Articles/ ~/Documents/Articles
+	system "mkdir -p ~/Documents/rsync/ && rsync -avzhe ssh '$addr':~/rsync/ ~/Documents/rsync/";
+	
+	# Sets symlinks pointing towards the rsync folder
+	system "ln -nfs -T ~/Documents/rsync/Pictures ~/Pictures";
+	system "ln -nfs -T ~/Documents/rsync/Documents/Articles ~/Documents/Articles";
+	system "ln -nfs -T ~/Documents/rsync/Config/mpv ~/.config/mpv";
 }
 
 if ($restart eq "required") {
