@@ -1,7 +1,6 @@
 # Install
 Automates the normal initial setup of personal Linux machines. Designed to work with Manjaro Linux, but likely works on other 
-Arch-based distributions (or, more generally, any machine that has pacman installed). Also contains instructions for automating
-the update process.
+Arch-based distributions (or, more generally, any machine that has pacman installed).
 
 ## Dependencies
 `pacman`
@@ -9,5 +8,9 @@ the update process.
 ## Instructions
 ```sh
 wget https://raw.githubusercontent.com/ebeatty1/install/master/install.pl
-perl ./install.pl
+perl ./install.pl [options]
 ```
+
+## Considerations
+1. @packages and @aurpackages should be edited to include packages that fit the needs of an individual user
+1. --rsync should be edited, as symlink creation is based on the heirarchy of my own rsync directory
