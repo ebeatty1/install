@@ -11,7 +11,8 @@ my $addr;
 my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
 my @keybinds;
-
+my @packages = ("cmus", "cowsay", "dos2unix", "fortune", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
 my $usage = <<"USAGE";
 
@@ -51,41 +52,38 @@ GetOptions(
 
 if ($help){die "$usage\n$options\n";}
 
-# Removes any and all instances of xfce4-terminal --drop-down
-if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
-	open XFCEKEYBINDSIN, "<$xfcekeys";
-	@keybinds = <XFCEKEYBINDSIN>;
-	close XFCEKEYBINDSIN;
-
-	open XFCEKEYBINDSOUT, ">$xfcekeys";
-	while (my $line = shift(@keybinds)) {
-		$line =~ s/\s--drop-down//;
-		print XFCEKEYBINDSOUT $line;
-	}
-	close XFCEKEYBINDSOUT;
-}
-
-# Checks to ensure that the address, if given, is formatted properly (IPv4 only for now); if not, dies
+# Checks to ensure that the address, if given, is formatted properly; if not, dies
 if ($full) {$addr = $full;}
 if ($rsync) {
 	if ($addr) {exit;}
 	else {$addr = $rsync;}
 }
-if ($addr) {chomp $addr; die "$addrformat\n" unless $addr =~ /.+\@\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;}
+if ($addr) {chomp $addr; die "$addrformat\n" unless $addr =~ /.+\@.+/;}
+
+# Removes any and all instances of xfce4-terminal --drop-down from xfce4-keyboard-shortcuts.xml
+if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
+	open XFCEKEYBINDS, "<$xfcekeys";
+	@keybinds = <XFCEKEYBINDS>;
+	close XFCEKEYBINDS;
+
+	open XFCEKEYBINDS, ">$xfcekeys";
+	while (my $line = shift(@keybinds)) {
+		$line =~ s/\s--drop-down//;
+		print XFCEKEYBINDS $line;
+	}
+	close XFCEKEYBINDS;
+}
 
 # Update system, install packages
 if ($base || $full){
 	# Start by ensuring everything is up to date
 	system "sudo pacman -Syu --noconfirm --verbose";
-
-	my @packages = ("cmus", "dos2unix", "irssi", "mpv", "neofetch", "perl", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
-	my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 	
+	# Install packages from the official arch repositories
 	system "sudo pacman -S @packages --noconfirm --needed --verbose";
 	
-	system "mkdir -p ~/AUR";
-	
 	# Installs AUR packages and updates packages that already exist
+	system "mkdir -p ~/AUR";
 	while (my $aurpackage = shift@aurpackages) {
 		if (-d "$ENV{HOME}/AUR/$aurpackage") {
 			system "cd ~/AUR/$aurpackage && git pull && makepkg -scCi --noconfirm --needed";
