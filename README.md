@@ -17,4 +17,5 @@ For users other than myself:
 1. --rsync should be edited, as symlink creation is based on the heirarchy of my own rsync directory
 
 For use on systems that aren't fresh installs:
-1. --rsync removes certain directories, as well as anything contained within them; make sure this behavior is understood before running, or config files and pictures might be lost
+1. --rsync and --full remove certain directories, as well as anything contained within them, before creating symlinks; make sure 
+this behavior is understood before running, or config files and pictures might be lost
