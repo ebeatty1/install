@@ -132,7 +132,7 @@ if ($base || $full){
 		
 		if ($walbashrc eq "required") {
 			open BASHRC, ">>$ENV{HOME}/.bashrc";
-			print BASHRC "$walreboot";
+			print BASHRC "$walasync";
 			close BASHRC;
 		}
 		
