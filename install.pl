@@ -12,7 +12,7 @@ my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
 my $restart = "";
 my @keybinds;
-my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "mpv", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "keepassxc", "mpv", "mupdf", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
 my $usage = <<"USAGE";
