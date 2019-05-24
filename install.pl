@@ -12,7 +12,7 @@ my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
 my $restart = "";
 my @keybinds;
-my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "irssi", "mpv", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "mpv", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
 my $usage = <<"USAGE";
@@ -103,6 +103,7 @@ if ($addr){
 	system "mkdir -p ~/Documents/rsync/ && rsync -avzhe ssh '$addr':~/rsync/ ~/Documents/rsync/";
 	
 	# Sets symlinks pointing towards the rsync folder
+	system "rm -rf ~/Pictures ~/Documents/Articles ~/.config/mpv";
 	system "ln -nfs -T ~/Documents/rsync/Pictures ~/Pictures";
 	system "ln -nfs -T ~/Documents/rsync/Documents/Articles ~/Documents/Articles";
 	system "ln -nfs -T ~/Documents/rsync/Config/mpv ~/.config/mpv";
