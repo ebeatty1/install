@@ -11,7 +11,11 @@ my $addr;
 my $de;
 my $xfcekeys = "$ENV{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml";
 my $restart = "";
+my $walbashrc = "required";
+my $walxinitrc = "required";
 my @keybinds;
+my @bashrc;
+my @xinitrc;
 my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "keepassxc", "mpv", "mupdf", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
@@ -41,6 +45,19 @@ my $addrformat = <<"FORMAT";
 When using -f (--full) or -r (--rsync), the argument should be formatted as user\@hostip
 EXAMPLE (package installation + rsync):	install.pl --full evan\@192.168.1.2
 FORMAT
+
+my $walasync = <<"WALASYNC";
+
+# Import colorscheme from 'wal' asynchronously
+(cat ~/.cache/wal/sequences &)
+source ~/.cache/wal/colors-tty.sh
+WALASYNC
+
+my $walreboot = <<"WALREBOOT";
+
+# Restore the last 'wal' colorscheme that was in use.
+wal -R
+WALREBOOT
 
 die "$usage\n" unless@ARGV;
 
@@ -96,6 +113,46 @@ if ($base || $full){
 			system "cd ~/AUR/ && git clone https://aur.archlinux.org/$aurpackage.git && cd ./$aurpackage && makepkg -scCi --noconfirm --needed";
 		}
 	}
+	
+	# Sets wal to retain changes on reboot and logout
+	if (`bash -c 'wal'` eq "") {
+		print "The program wal was not found.\n";
+	}
+	else {
+		open BASHRC, "<$ENV{HOME}/.bashrc";
+		@bashrc = <BASHRC>;
+		close BASHRC;
+		
+		while  (my $line = shift(@bashrc)) {
+			if ($line =~ m/cat \~\/\.cache\/wal\/sequences \&/) {
+				$walbashrc = "";
+				print "It doesn't look like .bashrc needs to be edited.\n";
+			}
+		}
+		
+		if ($walbashrc eq "required") {
+			open BASHRC, ">>$ENV{HOME}/.bashrc";
+			print BASHRC "$walreboot";
+			close BASHRC;
+		}
+		
+		open XINITRC, "<$ENV{HOME}/.xinitrc";
+		@xinitrc = <XINITRC>;
+		close XINITRC;
+		
+		while  (my $line = shift(@xinitrc)) {
+			if ($line =~ m/wal \-R/) {
+				$walxinitrc = "";
+				print "It doesn't look like .xinitrc needs to be edited.\n";
+			}
+		}
+		
+		if ($walxinitrc eq "required") {
+			open XINITRC, ">>$ENV{HOME}/.xinitrc";
+			print XINITRC "$walreboot";
+			close XINITRC;
+		}
+	}
 }
 
 # Run rsync
@@ -107,6 +164,16 @@ if ($addr){
 	system "ln -nfs -T ~/Documents/rsync/Pictures ~/Pictures";
 	system "ln -nfs -T ~/Documents/rsync/Documents/Articles ~/Documents/Articles";
 	system "ln -nfs -T ~/Documents/rsync/Config/mpv ~/.config/mpv";
+}
+
+if (`bash -c 'wal'` eq "") {
+	print "The program wal was not found.\n";
+}
+elsif (not -e "$ENV{HOME}/Pictures/Backgrounds/" || not -d "$ENV{HOME}/Pictures/Backgrounds/") {
+	print "A Backgrounds folder was not found at ~/Pictures/Backgrounds/.\n ";
+}
+else {
+	system "wal -i ~/Pictures/Backgrounds/";
 }
 
 if ($restart eq "required") {
