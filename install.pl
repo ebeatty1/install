@@ -125,6 +125,7 @@ if ($base || $full){
 		print "The program wal was not found.\n";
 	}
 	else {
+		# Edits ~/.bashrc
 		open BASHRC, "<$ENV{HOME}/.bashrc";
 		@bashrc = <BASHRC>;
 		close BASHRC;
@@ -142,6 +143,7 @@ if ($base || $full){
 			close BASHRC;
 		}
 		
+		# Edits ~/.xinitrc
 		open XINITRC, "<$ENV{HOME}/.xinitrc";
 		@xinitrc = <XINITRC>;
 		close XINITRC;
@@ -172,6 +174,7 @@ if ($addr){
 	system "ln -nfs -T ~/Documents/rsync/Config/mpv ~/.config/mpv";
 }
 
+# Run wal if it is installed and a Backgrounds folder exists
 if (`bash -c 'wal'` eq "") {
 	print "The program wal was not found.\n";
 }
@@ -182,6 +185,7 @@ else {
 	system "wal -i ~/Pictures/Backgrounds/";
 }
 
+# Restart the machine to refresh the XFCE keybind settings
 if ($restart eq "required") {
 	system "shutdown -r";
 }
