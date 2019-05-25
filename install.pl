@@ -59,6 +59,15 @@ my $walreboot = <<"WALREBOOT";
 wal -R
 WALREBOOT
 
+my $xfcetiling = <<"TILING";
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_Left" type="string" value="tile_left_key"/>
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_Right" type="string" value="tile_right_key"/>
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_Home" type="string" value="tile_up_left_key"/>
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_Page_Up" type="string" value="tile_up_right_key"/>
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_End" type="string" value="tile_down_left_key"/>
+<property name="&lt;Primary&gt;&lt;Alt&gt;KP_Next" type="string" value="tile_down_right_key"/>
+TILING
+
 die "$usage\n" unless@ARGV;
 
 GetOptions(
@@ -83,7 +92,7 @@ if ($base || $full){
 	# Start by ensuring everything is up to date
 	system "sudo pacman -Syu --noconfirm --verbose";
 	
-	# Removes any and all instances of xfce4-terminal --drop-down from xfce4-keyboard-shortcuts.xml
+	# Edits xfce4-keyboard-shortcuts.xml
 	if ($ENV{XDG_CURRENT_DESKTOP} eq "XFCE") {
 		open XFCEKEYBINDS, "<$xfcekeys";
 		@keybinds = <XFCEKEYBINDS>;
