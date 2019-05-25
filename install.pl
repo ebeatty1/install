@@ -16,7 +16,7 @@ my $walxinitrc = "required";
 my @keybinds;
 my @bashrc;
 my @xinitrc;
-my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "keepassxc", "mpv", "mupdf", "neofetch", "opusfile", "python-pywal", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
+my @packages = ("cmus", "cowsay", "dos2unix", "fortune-mod", "htop", "irssi", "keepassxc", "mpv", "mupdf", "neofetch", "opusfile", "rsync", "screen", "texmaker", "vnstat", "youtube-dl");
 my @aurpackages = ("fastqc", "mendeleydesktop", "scite");
 
 my $usage = <<"USAGE";
@@ -114,6 +114,12 @@ if ($base || $full){
 		}
 	}
 	
+	# Installs pywal from the public repository
+	if (`bash -c 'wal'` eq "") {
+		system "mkdir -p ~/GitHub/";
+		system "cd ~/GitHub/ && git clone https://github.com/dylanaraps/pywal && cd ./pywal && sudo pip3 install .";
+	}
+
 	# Sets wal to retain changes on reboot and logout
 	if (`bash -c 'wal'` eq "") {
 		print "The program wal was not found.\n";
